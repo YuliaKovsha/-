@@ -1,0 +1,222 @@
+namespace WinFormsApp1
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void textBox11_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string текстX = textBox1.Text;
+            string текстY = textBox2.Text;
+
+            double x = Convert.ToDouble(текстX);
+            double y = Convert.ToDouble(текстY);
+
+            double корінь = Math.Sqrt(Math.Abs(x));
+
+            double знаменник = x + (x * x / 4);
+
+            double вираз1 = y - корінь;
+            double вираз2 = x - y / знаменник;
+
+            double добуток = вираз1 * вираз2;
+
+            double модуль = Math.Abs(добуток);
+
+            double результат = Math.Log(модуль);
+
+            label3.Text = "Результат: " + результат;
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string текстN = textBox9.Text;
+
+            int n = Convert.ToInt32(текстN);
+
+            listBox2.Items.Clear();
+            listBox2.Items.Add("Числа, чий квадрат закінчується на те саме число:");
+
+            for (int i = 1; i <= n; i++)
+            {
+                int квадрат = i * i;
+
+                int останняЦифраЧисла = i % 10;
+                int останняЦифраКвадрата = квадрат % 10;
+
+                if (останняЦифраКвадрата == останняЦифраЧисла)
+                {
+                    listBox2.Items.Add(i + " у квадраті = " + квадрат);
+                }
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string текстN = textBox3.Text;
+
+            int n = Convert.ToInt32(текстN);
+
+            listBox1.Items.Clear();
+
+            double степінь1 = Math.Pow(n, 1);
+            listBox1.Items.Add(n + " в 1 степені = " + степінь1);
+
+            double степінь2 = Math.Pow(n, 2);
+            listBox1.Items.Add(n + " в 2 степені = " + степінь2);
+
+            double степінь3 = Math.Pow(n, 3);
+            listBox1.Items.Add(n + " в 3 степені = " + степінь3);
+
+            double степінь4 = Math.Pow(n, 4);
+            listBox1.Items.Add(n + " в 4 степені = " + степінь4);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string текстA = textBox4.Text;
+            string текстB = textBox5.Text;
+            string текстC = textBox6.Text;
+
+            double a = Convert.ToDouble(текстA);
+            double b = Convert.ToDouble(текстB);
+            double c = Convert.ToDouble(текстC);
+
+            if (a == b || a == c || b == c)
+            {
+                label8.Text = "true - трикутник рівнобедрений";
+            }
+            else
+            {
+                label8.Text = "false - трикутник не рівнобедрений";
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string текстA = textBox7.Text;
+            string текстB = textBox8.Text;
+
+            short A = Convert.ToInt16(текстA);
+            short B = Convert.ToInt16(текстB);
+
+            int сума = A + B;
+
+            if (сума > 32767)
+            {
+                label3.Text = "ПЕРЕПОВНЕННЯ! Сума більша за 32767";
+            }
+            else
+            {
+                label11.Text = "Сума = " + сума;
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            string текстN = textBox10.Text;
+
+            int n = Convert.ToInt32(текстN);
+
+            double[] X = new double[n];
+            double[] Y = new double[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                string координатаX = Microsoft.VisualBasic.Interaction.InputBox("Введіть X для точки " + (i + 1), "Введення координат");
+                string координатаY = Microsoft.VisualBasic.Interaction.InputBox("Введіть Y для точки " + (i + 1), "Введення координат");
+
+                X[i] = Convert.ToDouble(координатаX);
+                Y[i] = Convert.ToDouble(координатаY);
+            }
+
+            double максимальнаВідстань = 0;
+            int першаТочка = 0;
+            int другаТочка = 0;
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = i + 1; j < n; j++)
+                {
+                    double різницяX = X[i] - X[j];
+                    double різницяY = Y[i] - Y[j];
+
+                    double квадратX = різницяX * різницяX;
+                    double квадратY = різницяY * різницяY;
+
+                    double відстань = Math.Sqrt(квадратX + квадратY);
+
+                    if (відстань > максимальнаВідстань)
+                    {
+                        максимальнаВідстань = відстань;
+                        першаТочка = i + 1;
+                        другаТочка = j + 1;
+                    }
+                }
+            }
+
+            label16.Text = "Найбільша відстань між точкою " + першаТочка + " і точкою " + другаТочка;
+            label17.Text = "Відстань = " + максимальнаВідстань;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            string текст = textBox11.Text;
+
+            if (текст.EndsWith("."))
+            {
+                текст = текст.Remove(текст.Length - 1, 1);
+            }
+
+            char[] розділювачі = new char[] { ' ', ',', ';', ':', '!', '?' };
+
+            string[] слова = текст.Split(розділювачі);
+
+            listBox3.Items.Clear();
+            listBox3.Items.Add("Слова з трьох букв:");
+
+            for (int i = 0; i < слова.Length; i++)
+            {
+                string слово = слова[i];
+
+                if (слово.Length == 3)
+                {
+                    bool тількиБукви = true;
+
+                    for (int j = 0; j < слово.Length; j++)
+                    {
+                        char символ = слово[j];
+
+                        if (!char.IsLetter(символ))
+                        {
+                            тількиБукви = false;
+                        }
+                    }
+
+                    if (тількиБукви == true)
+                    {
+                        listBox3.Items.Add(слово);
+                    }
+                }
+            }
+        }
+
+        private void textBox7_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
