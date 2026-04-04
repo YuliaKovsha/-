@@ -1,0 +1,131 @@
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+        //Одновимірний масив
+        Console.WriteLine("=== Частина 1. Одновимірний масив ===\n");
+
+        Console.Write("Введіть кількість елементів n: ");
+        int n = int.Parse(Console.ReadLine());
+
+        double[] arr = new double[n];
+        Console.WriteLine("Введіть елементи масиву (дійсні числа):");
+        for (int i = 0; i < n; i++)
+        {
+            Console.Write($"arr[{i}] = ");
+            arr[i] = double.Parse(Console.ReadLine());
+        }
+
+        Console.Write("Введіть число C: ");
+        double C = double.Parse(Console.ReadLine());
+
+        //Кількість елементів які більші за С
+        int countGreaterThanC = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (arr[i] > C)
+                countGreaterThanC++;
+        }
+
+        //Максимальне за модулем та індексом
+        double maxAbsValue = 0;
+        int indexOfMaxAbs = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (Math.Abs(arr[i]) > maxAbsValue)
+            {
+                maxAbsValue = Math.Abs(arr[i]);
+                indexOfMaxAbs = i;
+            }
+        }
+
+        //Добуток після максимального за модулем
+        double productAfterMaxAbs = 1.0;
+        bool hasElementsAfter = false;
+        for (int i = indexOfMaxAbs + 1; i < n; i++)
+        {
+            productAfterMaxAbs *= arr[i];
+            hasElementsAfter = true;
+        }
+        if (!hasElementsAfter)
+            productAfterMaxAbs = 0;
+
+        //Результати
+        Console.WriteLine("\n--- Результати розрахунків ---");
+        Console.WriteLine($"а) Кількість елементів > {C}: {countGreaterThanC}");
+        Console.WriteLine($"б) Добуток елементів після макс. за модулем: {(hasElementsAfter ? productAfterMaxAbs.ToString() : "немає елементів")}");
+
+        //Перетворення масиву
+        double[] negative = arr.Where(x => x < 0).ToArray();
+        double[] nonNegative = arr.Where(x => x >= 0).ToArray();
+        double[] transformed = negative.Concat(nonNegative).ToArray();
+
+        Console.WriteLine("\n--- Перетворений масив ---");
+        Console.WriteLine(string.Join(", ", transformed));
+
+        //Двовимірний масив
+        Console.WriteLine("\n=== Частина 2. Двовимірний масив ===\n");
+
+        int rows = 5;  
+        Console.Write("Введіть кількість стовпців: ");
+        int cols = int.Parse(Console.ReadLine());
+
+        int[,] matrix = new int[rows, cols];
+
+        Console.WriteLine("Введіть елементи двовимірного масиву (цілі числа):");
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                Console.Write($"matrix[{i},{j}] = ");
+                matrix[i, j] = int.Parse(Console.ReadLine());
+            }
+        }
+
+        Console.WriteLine("\nПочатковий двовимірний масив:");
+        PrintMatrix(matrix);
+
+        Console.Write("\nВведіть номер стовпця (0..{0}) для заміни в 5-му рядку: ", cols - 1);
+        int colInRow5 = int.Parse(Console.ReadLine());
+        if (colInRow5 >= 0 && colInRow5 < cols)
+        {
+            matrix[4, colInRow5] = 2012;
+            Console.WriteLine($"matrix[4,{colInRow5}] замінено на 2012");
+        }
+
+        Console.Write("\nВведіть число a: ");
+        int a = int.Parse(Console.ReadLine());
+        Console.Write("Введіть номер рядка (0..{0}): ", rows - 1);
+        int rowIdx = int.Parse(Console.ReadLine());
+        Console.Write("Введіть номер стовпця (0..{0}): ", cols - 1);
+        int colIdx = int.Parse(Console.ReadLine());
+
+        if (rowIdx >= 0 && rowIdx < rows && colIdx >= 0 && colIdx < cols)
+        {
+            matrix[rowIdx, colIdx] = a;
+            Console.WriteLine($"matrix[{rowIdx},{colIdx}] замінено на {a}");
+        }
+
+        Console.WriteLine("\nДвовимірний масив після замін:");
+        PrintMatrix(matrix);
+    }
+
+    static void PrintMatrix(int[,] matrix)
+    {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                Console.Write($"{matrix[i, j],8}");
+            }
+            Console.WriteLine();
+        }
+    }
+}
