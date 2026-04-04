@@ -1,0 +1,113 @@
+using System;
+
+abstract class Root
+{
+    public virtual double[] CalculateRoots() => new double[0];
+    public virtual void PrintResult() => Console.WriteLine("Абстрактний клас Root");
+}
+
+class Linear : Root
+{
+    private double a, b;
+
+    public Linear(double a, double b)
+    {
+        this.a = a;
+        this.b = b;
+    }
+
+    public override double[] CalculateRoots()
+    {
+        if (a == 0)
+            throw new Exception("Рівняння не є лінійним (a = 0)");
+        return new double[] { -b / a };
+    }
+
+    public override void PrintResult()
+    {
+        Console.WriteLine($"Лінійне рівняння: {a}x + {b} = 0");
+        try
+        {
+            double[] roots = CalculateRoots();
+            Console.WriteLine($"Корінь: x = {roots[0]:F3}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Помилка: {ex.Message}");
+        }
+        Console.WriteLine();
+    }
+}
+
+class Square : Root
+{
+    private double a, b, c;
+
+    public Square(double a, double b, double c)
+    {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+    }
+
+    public override double[] CalculateRoots()
+    {
+        if (a == 0)
+            return new Linear(b, c).CalculateRoots();
+
+        double D = b * b - 4 * a * c;
+
+        if (D < 0)
+            throw new Exception("Дійсних коренів немає (D < 0)");
+        if (Math.Abs(D) < 1e-10)
+            return new double[] { -b / (2 * a) };
+
+        double sqrtD = Math.Sqrt(D);
+        return new double[]
+        {
+            (-b + sqrtD) / (2 * a),
+            (-b - sqrtD) / (2 * a)
+        };
+    }
+
+    public override void PrintResult()
+    {
+        Console.WriteLine($"Квадратне рівняння: {a}x² + {b}x + {c} = 0");
+        try
+        {
+            double[] roots = CalculateRoots();
+            if (roots.Length == 1)
+                Console.WriteLine($"Один корінь: x = {roots[0]:F3}");
+            else
+                Console.WriteLine($"Два корені: x₁ = {roots[0]:F3}, x₂ = {roots[1]:F3}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Помилка: {ex.Message}");
+        }
+        Console.WriteLine();
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.WriteLine("=== Лабораторна робота №17 (Варіант 7) ===\n");
+
+        Root[] equations = {
+            new Linear(2, -4),      
+            new Linear(0, 5),       
+            new Square(1, -5, 6),   
+            new Square(1, 2, 1),    
+            new Square(1, 0, 1),   
+            new Square(0, 2, -4)    
+        };
+
+        foreach (var eq in equations)
+        {
+            eq.PrintResult();
+        }
+    }
+}
