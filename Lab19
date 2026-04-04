@@ -1,0 +1,14 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Рядок: ");
+        string text = Console.ReadLine();
+
+        string result = text.Replace(" ", "");
+
+        Console.WriteLine("Готовий результат: " + result);
+    }
+}
