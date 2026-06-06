@@ -1,0 +1,172 @@
+using System;
+using System.IO;
+
+namespace Lab21_ConsoleEditor
+{
+    class Program
+    {
+        static string text = "";
+        static string fileName = "";
+
+        static void Main(string[] args)
+        {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.Title = "Консольний текстовий редактор (Lab21)";
+
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("================================================");
+                Console.WriteLine("ЛАБОРАТОРНА РОБОТА №21 - Текстовий редактор");
+                Console.WriteLine("================== МІНІМУМ =====================");
+                Console.WriteLine();
+                Console.WriteLine("1 - Створити новий файл");
+                Console.WriteLine("2 - Відкрити існуючий файл");
+                Console.WriteLine("3 - Редагувати текст");
+                Console.WriteLine("4 - Переглянути текст");
+                Console.WriteLine("5 - Зберегти файл");
+                Console.WriteLine("6 - Вийти");
+                Console.WriteLine();
+                Console.Write("Ваш вибір: ");
+
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        CreateNewFile();
+                        break;
+                    case "2":
+                        OpenFile();
+                        break;
+                    case "3":
+                        EditText();
+                        break;
+                    case "4":
+                        ViewText();
+                        break;
+                    case "5":
+                        SaveFile();
+                        break;
+                    case "6":
+                        Console.WriteLine("До побачення!");
+                        return;
+                    default:
+                        Console.WriteLine("Невірний вибір. Натисніть будь-яку клавішу...");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
+
+        static void CreateNewFile()
+        {
+            Console.Clear();
+            Console.WriteLine("=== СТВОРЕННЯ НОВОГО ФАЙЛУ ===");
+            Console.Write("Введіть назву файлу (без розширення): ");
+            fileName = Console.ReadLine() + ".txt";
+            text = "";
+            Console.WriteLine($"Створено новий файл: {fileName}");
+            Console.WriteLine("Натисніть будь-яку клавішу для продовження...");
+            Console.ReadKey();
+        }
+
+        static void OpenFile()
+        {
+            Console.Clear();
+            Console.WriteLine("=== ВІДКРИТТЯ ФАЙЛУ ===");
+            Console.Write("Введіть назву файлу (з розширенням): ");
+            string name = Console.ReadLine();
+
+            try
+            {
+                if (File.Exists(name))
+                {
+                    text = File.ReadAllText(name);
+                    fileName = name;
+                    Console.WriteLine($"Файл {name} успішно відкрито!");
+                }
+                else
+                {
+                    Console.WriteLine($"Файл {name} не знайдено!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Помилка при відкритті: {ex.Message}");
+            }
+
+            Console.WriteLine("Натисніть будь-яку клавішу...");
+            Console.ReadKey();
+        }
+
+        static void EditText()
+        {
+            Console.Clear();
+            Console.WriteLine("=== РЕДАГУВАННЯ ТЕКСТУ ===");
+            Console.WriteLine("Введіть текст (для завершення введіть порожній рядок):");
+            Console.WriteLine("----------------------------------------");
+
+            string newText = "";
+            string line;
+
+            while (true)
+            {
+                line = Console.ReadLine();
+                if (line == "")
+                    break;
+                newText += line + Environment.NewLine;
+            }
+
+            text = newText;
+            Console.WriteLine("Текст збережено в пам'яті!");
+            Console.WriteLine("Натисніть будь-яку клавішу...");
+            Console.ReadKey();
+        }
+
+        static void ViewText()
+        {
+            Console.Clear();
+            Console.WriteLine("=== ПЕРЕГЛЯД ТЕКСТУ ===");
+            Console.WriteLine("----------------------------------------");
+
+            if (string.IsNullOrEmpty(text))
+            {
+                Console.WriteLine("(Текст порожній)");
+            }
+            else
+            {
+                Console.WriteLine(text);
+            }
+
+            Console.WriteLine("----------------------------------------");
+            Console.WriteLine("Натисніть будь-яку клавішу...");
+            Console.ReadKey();
+        }
+
+        static void SaveFile()
+        {
+            Console.Clear();
+            Console.WriteLine("=== ЗБЕРЕЖЕННЯ ФАЙЛУ ===");
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                Console.Write("Введіть назву файлу для збереження: ");
+                fileName = Console.ReadLine() + ".txt";
+            }
+
+            try
+            {
+                File.WriteAllText(fileName, text);
+                Console.WriteLine($"Файл {fileName} успішно збережено!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Помилка при збереженні: {ex.Message}");
+            }
+
+            Console.WriteLine("Натисніть будь-яку клавішу...");
+            Console.ReadKey();
+        }
+    }
+}
