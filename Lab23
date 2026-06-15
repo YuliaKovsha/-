@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace Lab23_Variant7
+{
+    public partial class Form1 : Form
+    {
+        private float originX, originY;
+        private float scale = 50;
+
+        public Form1()
+        {
+            InitializeComponent();
+
+            this.pictureBoxGraph.Paint += pictureBoxGraph_Paint;
+            this.buttonDraw.Click += buttonDraw_Click;
+            this.Load += Form1_Load;
+            this.Resize += Form1_Resize;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            originX = pictureBoxGraph.Width / 2;
+            originY = pictureBoxGraph.Height / 2;
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            originX = pictureBoxGraph.Width / 2;
+            originY = pictureBoxGraph.Height / 2;
+            pictureBoxGraph.Invalidate();
+        }
+
+        private void DrawAxesAndGrid(Graphics g)
+        {
+            // (вставте код з кроку 8)
+        }
+
+        private void DrawCurve(Graphics g)
+        {
+            // (вставте код з кроку 9)
+        }
+
+        private void pictureBoxGraph_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.White);
+            DrawAxesAndGrid(e.Graphics);
+            DrawCurve(e.Graphics);
+        }
+
+        private void buttonDraw_Click(object sender, EventArgs e)
+        {
+            originX = pictureBoxGraph.Width / 2;
+            originY = pictureBoxGraph.Height / 2;
+            pictureBoxGraph.Invalidate();
+        }
+    }
+}
